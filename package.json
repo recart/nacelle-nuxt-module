@@ -1,0 +1,19 @@
+{
+  "name": "@recart/nacelle-nuxt-module",
+  "version": "0.0.1",
+  "description": "Recart integration for Nacelle",
+  "main": "lib/module.js",
+  "scripts": {
+    "test": "echo 'ok'; exit 0;"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recart/nacelle-nuxt-module.git"
+  },
+  "author": "Recart",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/recart/nacelle-nuxt-module/issues"
+  },
+  "homepage": "https://github.com/recart/nacelle-nuxt-module#readme"
+}
