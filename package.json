@@ -1,0 +1,30 @@
+{
+  "name": "@recart/nacelle-nuxt-module",
+  "version": "0.0.1",
+  "description": "Recart integration for Nacelle",
+  "main": "lib/module.js",
+  "scripts": {
+    "test": "eslint . && mocha --recursive --exit --bail"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recart/nacelle-nuxt-module.git"
+  },
+  "author": "Recart",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/recart/nacelle-nuxt-module/issues"
+  },
+  "homepage": "https://github.com/recart/nacelle-nuxt-module#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.15.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^7.2.0",
+    "mocha": "^8.2.1"
+  }
+}
