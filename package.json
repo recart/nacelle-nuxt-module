@@ -4,7 +4,9 @@
   "description": "Recart integration for Nacelle",
   "main": "lib/module.js",
   "scripts": {
-    "test": "eslint . && mocha --recursive --exit --bail"
+    "lint": "eslint .",
+    "test": "mocha --recursive --exit --bail",
+    "test:ci": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
