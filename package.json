@@ -1,6 +1,6 @@
 {
   "name": "@recart/nacelle-nuxt-module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Recart integration for Nacelle",
   "main": "lib/module.js",
   "scripts": {
