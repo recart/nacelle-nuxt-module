@@ -54,8 +54,6 @@ describe('module', () => {
         ...moduleOptions
       })
 
-      expect(params.async).to.equal(true, 'async should be true')
-      expect(params.defer).to.equal(true, 'defer should be true')
       expect(params.mode).to.equal('client', 'mode should be set to "client"')
       expect(params.ssr).to.equal(false, 'ssr should be false')
       return true
@@ -71,10 +69,9 @@ describe('module', () => {
 
     expect(nuxtContext.options.head.script.length).to.equal(1)
     expect(nuxtContext.options.head.script[0]).to.eql({
-      hid: 'trackingjs',
+      hid: 'recart-loader-js',
       src: `https://cdn.ghostmonitor.com/recart-loader.js?siteId=${moduleOptions.recartSiteId}&storefront=nacelle`,
-      async: true,
-      defer: true
+      async: true
     })
   })
 })
