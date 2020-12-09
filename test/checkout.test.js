@@ -1,5 +1,6 @@
 const { expect } = require('chai')
-const { getMetafieldsForCheckout } = require('../lib/checkout')
+const { getMetafieldsForCheckout, saveCheckoutId } = require('../lib/checkout')
+const sinon = require('sinon')
 
 describe('checkout / getMetafieldsForCheckout', () => {
   let globalWindowBackup
@@ -53,5 +54,65 @@ describe('checkout / getMetafieldsForCheckout', () => {
       const result = getMetafieldsForCheckout()
       expect(result).to.deep.equal(testCase.expected)
     })
+  })
+})
+
+describe('checkout / saveCheckoutId', () => {
+  let globalWindowBackup, sandbox
+
+  before(() => {
+    globalWindowBackup = global.window
+    sandbox = sinon.createSandbox()
+    global.window = {
+      _recart: {
+        setShopifyCheckoutId: sandbox.stub()
+      }
+    }
+  })
+
+  afterEach(() => {
+    sandbox.reset()
+  })
+
+  after(() => {
+    sandbox.restore()
+    global.window = globalWindowBackup
+  })
+
+  it('should NOT send anything if input is unknown', async () => {
+    await saveCheckoutId('something-random', { hello: 'world' })
+
+    sinon.assert.notCalled(global.window._recart.setShopifyCheckoutId)
+  })
+
+  it('should send checkout it from checkout/setCheckout mutation', async () => {
+    await saveCheckoutId('checkout/setCheckout', {
+      id: 'Z2lkOi8vc2hvcGlmeS9DaGVja291dC80NDFmYzNlM2YzZjJkYTE5OGQwZmExMTI1OTMyNjJmMz9rZXk9N2U4MGMwZjVlNTdjNDFlODVjNDRiNGFjMTBlNjQzYTQ=',
+      url: 'https://shop.something.com/6644334658/checkouts/441fc3e3f3f2da198d0fa112593262f3?key=7e80c0f5e57c41e85c44b4ac10e643a4&c=undefined&_ga=2.118637641.1321579166.1607552485-2133470184.1594910032'
+    })
+
+    sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '441fc3e3f3f2da198d0fa112593262f3')
+  })
+
+  it('should NOT send anything if checkout ID cannot be decoded', async () => {
+    await saveCheckoutId('checkout/setCheckout', {
+      id: 'blablablablablabla...JmMz9rZXk9N2U4MGMwZjVlNTdjNDFlODVjNDRiNGFjMTBlNjQzYTQ='
+    })
+
+    sinon.assert.notCalled(global.window._recart.setShopifyCheckoutId)
+  })
+
+  it('should send checkout it from checkout/setCheckoutId mutation', async () => {
+    await saveCheckoutId('checkout/setCheckoutId', 'Z2lkOi8vc2hvcGlmeS9DaGVja291dC80NDFmYzNlM2YzZjJkYTE5OGQwZmExMTI1OTMyNjJmMz9rZXk9N2U4MGMwZjVlNTdjNDFlODVjNDRiNGFjMTBlNjQzYTQ=')
+
+    sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '441fc3e3f3f2da198d0fa112593262f3')
+  })
+
+  it('should send checkout it from events/addEvent mutation', async () => {
+    await saveCheckoutId('events/addEvent', {
+      checkoutId: '441fc3e3f3f2da198d0fa112593262f3'
+    })
+
+    sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '441fc3e3f3f2da198d0fa112593262f3')
   })
 })
