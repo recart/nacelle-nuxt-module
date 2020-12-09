@@ -2,6 +2,6 @@ node_modules
 .nuxt
 .vscode
 .DS_Store
-*.decypt
-*.decypted
+*.decrypt
+*.decrypted
 *.aes

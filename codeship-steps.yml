@@ -1,0 +1,7 @@
+- name: Test
+  service: node
+  command: npm run test:ci
+- name: Deploy
+  service: node
+  command: npm publish --access public
+  tag: ^v(\d+.?)+.*$
