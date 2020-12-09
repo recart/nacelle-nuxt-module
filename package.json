@@ -15,7 +15,7 @@
   "files": [
     "lib"
   ],
-  "author": "Recart",
+  "author": "Recart <support@recart.com> (https://recart.com/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/recart/nacelle-nuxt-module/issues"
