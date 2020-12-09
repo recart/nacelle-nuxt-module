@@ -1,7 +1,7 @@
 const { expect } = require('chai')
-const getMetafieldsForCheckout = require('../lib/getMetafieldsForCheckout')
+const { getMetafieldsForCheckout } = require('../lib/checkout')
 
-describe('getMetafieldsForCheckout', () => {
+describe('checkout / getMetafieldsForCheckout', () => {
   let globalWindowBackup
 
   before(() => {
