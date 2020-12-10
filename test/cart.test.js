@@ -1,5 +1,6 @@
-const { saveCart } = require('../lib/cart')
+const { saveCart, rebuildCart } = require('../lib/cart')
 const sinon = require('sinon')
+const { expect } = require('chai')
 
 const cartFixture = require('./cart.fixture')
 const productsFixture = require('./products.fixture')
@@ -136,5 +137,92 @@ describe('cart / saveCart', () => {
     await saveCart(cartFixture, {}, {})
 
     sinon.assert.notCalled(global.window._recart.setCart)
+  })
+})
+
+describe('cart / rebuildCart', () => {
+  let globalWindowBackup, sandbox
+
+  const recartCartItemsFixture = [{
+    category: '',
+    variantId: 37036471582878,
+    productId: '5928875163806',
+    name: 'Fancy Bath Bombs',
+    qty: 2,
+    price: 48,
+    qtyPrice: 96,
+    currency: 'USD',
+    imageUrl: 'https://static.ghostmonitor.com/email/shopping-bag.jpg'
+  }, {
+    category: '',
+    variantId: 37036471615646,
+    productId: '5928875229342',
+    name: '4 Ounce Soy Candle',
+    qty: 1,
+    price: 116,
+    qtyPrice: 116,
+    currency: 'USD',
+    imageUrl: 'https://cdn.shopify.com/s/files/1/0515/7004/9182/products/4-ounce-soy-candle.jpg?v=1606487687'
+  }]
+
+  const addLineItemMutations = [{
+    image: { thumbnailSrc: 'https://static.ghostmonitor.com/email/shopping-bag.jpg' },
+    title: 'Fancy Bath Bombs',
+    variant: {
+      id: 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzAzNjQ3MTU4Mjg3OA==',
+      price: 48,
+      priceCurrency: 'USD'
+    },
+    quantity: 2,
+    metafields: []
+  },
+  {
+    image: { thumbnailSrc: 'https://cdn.shopify.com/s/files/1/0515/7004/9182/products/4-ounce-soy-candle.jpg?v=1606487687' },
+    title: '4 Ounce Soy Candle',
+    variant: {
+      id: 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzAzNjQ3MTYxNTY0Ng==',
+      price: 116,
+      priceCurrency: 'USD'
+    },
+    quantity: 1,
+    metafields: []
+  }]
+
+  before(() => {
+    globalWindowBackup = global.window
+    sandbox = sinon.createSandbox()
+
+    global.window = {
+      _recart: {
+        getCartItems: sandbox.stub().resolves(recartCartItemsFixture)
+      },
+      btoa: (input) => Buffer.from(input).toString('base64')
+    }
+  })
+
+  afterEach(() => {
+    sandbox.reset()
+  })
+
+  after(() => {
+    sandbox.restore()
+    global.window = globalWindowBackup
+  })
+
+  it('should rebuild cart', async () => {
+    const ctx = {
+      store: {
+        dispatch: sandbox.stub()
+      }
+    }
+
+    await rebuildCart(ctx, 'some-session-id')
+
+    expect(ctx.store.dispatch.callCount).to.equal(3)
+    expect(ctx.store.dispatch.getCall(0).args[0]).to.equal('cart/resetLineItems')
+    expect(ctx.store.dispatch.getCall(1).args[0]).to.equal('cart/addLineItem')
+    expect(ctx.store.dispatch.getCall(1).args[1]).to.eql(addLineItemMutations[0])
+    expect(ctx.store.dispatch.getCall(2).args[0]).to.equal('cart/addLineItem')
+    expect(ctx.store.dispatch.getCall(2).args[1]).to.eql(addLineItemMutations[1])
   })
 })
