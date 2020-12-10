@@ -87,7 +87,6 @@ describe('cart / rebuildCart', () => {
   before(() => {
     globalWindowBackup = global.window
     sandbox = sinon.createSandbox()
-
   })
 
   beforeEach(() => {
