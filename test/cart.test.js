@@ -4,7 +4,7 @@ const sinon = require('sinon')
 const cartFixture = require('./cart.fixture')
 const productsFixture = require('./products.fixture')
 
-describe('cart', () => {
+describe('cart / saveCart', () => {
   let globalWindowBackup, sandbox
   const fakedNow = new Date()
 
