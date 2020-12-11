@@ -12,15 +12,17 @@ However, if you have a Nacelle site, you need to install this Nuxt module to mak
 
 ## Usage
 
-1. Install our package.
+1. **Install our package.**
 
     ```
     npm install @recart/nacelle-nuxt-module
     ```
 
-2. Add the module to your Nacelle app.
+2. **Add the module to your Nacelle app.**
 
-    Open `nuxt.config.js` and add `@recart/nacelle-nuxt-module` to the `modules` array. It should look like this:
+    Open `nuxt.config.js` and add `@recart/nacelle-nuxt-module` to the `modules` array, along with your Recart Site ID.
+    
+    It should look like this:
 
     ```
     modules: [
@@ -28,25 +30,11 @@ However, if you have a Nacelle site, you need to install this Nuxt module to mak
       '@nuxtjs/dotenv',
       '@nacelle/nacelle-nuxt-module',
       '@nuxtjs/sitemap',
-      '@recart/nacelle-nuxt-module'
+      ['@recart/nacelle-nuxt-module', { recartSiteId: '5abcdefgh000000000000000' }]
     ],
     ```
 
-3. Add configuration details
-
-    Add your Recart Site ID to the `nacelle` config object in `nuxt.config.js` as `recartSiteId`.
-    
     You can find your Site ID on the Recart dashboard: [app.recart.com/settings/me](https://app.recart.com/settings/me)
-
-    ```
-    nacelle: {
-      spaceID: process.env.NACELLE_SPACE_ID,
-      token: process.env.NACELLE_GRAPHQL_TOKEN,
-      gaID: process.env.NACELLE_GA_ID,
-      fbID: process.env.NACELLE_FB_ID,
-      recartSiteId: '5abcdefgh000000000000000'
-    },
-    ```
 
 ## Support
 
