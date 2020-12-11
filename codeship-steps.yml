@@ -1,4 +1,4 @@
-- name: Build
+- name: Build # Not really needed here, but we would like to see if the build fails for some reason
   service: node
   command: npm run build
 - name: Test
@@ -6,5 +6,5 @@
   command: npm run test:ci
 - name: Deploy
   service: node
-  command: npm publish --access public
+  command: npm run build && npm publish --access public
   tag: ^v(\d+.?)+.*$
