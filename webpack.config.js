@@ -10,7 +10,8 @@ module.exports = [
     },
     output: {
       filename: 'module.js',
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist'),
+      libraryTarget: 'commonjs-module'
     },
     externals: [nodeExternals()]
   },
@@ -22,7 +23,8 @@ module.exports = [
     },
     output: {
       filename: 'recart-nacelle-plugin.js',
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist'),
+      libraryTarget: 'commonjs-module'
     },
     externals: [nodeExternals()]
   }
