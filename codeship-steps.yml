@@ -6,5 +6,5 @@
   command: npm run test:ci
 - name: Deploy
   service: node
-  command: npm run build && npm publish --access public
+  command: sh -c 'npm run build && npm publish --access public'
   tag: ^v(\d+.?)+.*$
