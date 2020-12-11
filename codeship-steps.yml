@@ -1,3 +1,6 @@
+- name: Build
+  service: node
+  command: npm run build
 - name: Test
   service: node
   command: npm run test:ci
