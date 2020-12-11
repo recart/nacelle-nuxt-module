@@ -2,7 +2,7 @@
 
 Recart works out of the box on normal Shopify storefronts. 
 
-However, if you have a Nacelle site, you need to install this Nuxt module make Recart work.
+However, if you have a Nacelle site, you need to install this Nuxt module to make Recart work.
 
 ## Requirements
 
