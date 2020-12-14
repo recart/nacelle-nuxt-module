@@ -97,7 +97,7 @@ describe('checkout / saveCheckoutId', () => {
   it('should send non-encoded checkout ID from checkout/setCheckout mutation', async () => {
     await saveCheckoutId('checkout/setCheckout', {
       id: '233d67a224864402bd3ad922ad3f6f82',
-      url: 'https://checkout.rechargeapps.com/r/checkout/233d67a224864402bd3ad922ad3f6f82?myshopify_domain=blendjet.myshopify.com&c=undefined&_ga=2.164114623.1410696213.1607938690-1280642583.1607938690'
+      url: 'https://checkout.rechargeapps.com/r/checkout/233d67a224864402bd3ad922ad3f6f82?myshopify_domain=someshop.myshopify.com&c=undefined&_ga=2.164114623.1410696213.1607938690-1280642583.1607938690'
     })
 
     sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '233d67a224864402bd3ad922ad3f6f82')
