@@ -85,7 +85,7 @@ describe('checkout / saveCheckoutId', () => {
     sinon.assert.notCalled(global.window._recart.setShopifyCheckoutId)
   })
 
-  it('should send checkout it from checkout/setCheckout mutation', async () => {
+  it('should send encoded checkout ID from checkout/setCheckout mutation', async () => {
     await saveCheckoutId('checkout/setCheckout', {
       id: 'Z2lkOi8vc2hvcGlmeS9DaGVja291dC80NDFmYzNlM2YzZjJkYTE5OGQwZmExMTI1OTMyNjJmMz9rZXk9N2U4MGMwZjVlNTdjNDFlODVjNDRiNGFjMTBlNjQzYTQ=',
       url: 'https://shop.something.com/6644334658/checkouts/441fc3e3f3f2da198d0fa112593262f3?key=7e80c0f5e57c41e85c44b4ac10e643a4&c=undefined&_ga=2.118637641.1321579166.1607552485-2133470184.1594910032'
@@ -94,7 +94,16 @@ describe('checkout / saveCheckoutId', () => {
     sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '441fc3e3f3f2da198d0fa112593262f3')
   })
 
-  it('should NOT send anything if checkout ID cannot be decoded', async () => {
+  it('should send non-encoded checkout ID from checkout/setCheckout mutation', async () => {
+    await saveCheckoutId('checkout/setCheckout', {
+      id: '233d67a224864402bd3ad922ad3f6f82',
+      url: 'https://checkout.rechargeapps.com/r/checkout/233d67a224864402bd3ad922ad3f6f82?myshopify_domain=blendjet.myshopify.com&c=undefined&_ga=2.164114623.1410696213.1607938690-1280642583.1607938690'
+    })
+
+    sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '233d67a224864402bd3ad922ad3f6f82')
+  })
+
+  it('should NOT send anything if encoded checkout ID is invalid', async () => {
     await saveCheckoutId('checkout/setCheckout', {
       id: 'blablablablablabla...JmMz9rZXk9N2U4MGMwZjVlNTdjNDFlODVjNDRiNGFjMTBlNjQzYTQ='
     })
@@ -102,13 +111,19 @@ describe('checkout / saveCheckoutId', () => {
     sinon.assert.notCalled(global.window._recart.setShopifyCheckoutId)
   })
 
-  it('should send checkout it from checkout/setCheckoutId mutation', async () => {
+  it('should send encoded checkout ID from checkout/setCheckoutId mutation', async () => {
     await saveCheckoutId('checkout/setCheckoutId', 'Z2lkOi8vc2hvcGlmeS9DaGVja291dC80NDFmYzNlM2YzZjJkYTE5OGQwZmExMTI1OTMyNjJmMz9rZXk9N2U4MGMwZjVlNTdjNDFlODVjNDRiNGFjMTBlNjQzYTQ=')
 
     sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '441fc3e3f3f2da198d0fa112593262f3')
   })
 
-  it('should send checkout it from events/addEvent mutation', async () => {
+  it('should send non-encoded checkout ID from checkout/setCheckoutId mutation', async () => {
+    await saveCheckoutId('checkout/setCheckoutId', '441fc3e3f3f2da198d0fa112593262f3')
+
+    sinon.assert.calledOnceWithExactly(global.window._recart.setShopifyCheckoutId, '441fc3e3f3f2da198d0fa112593262f3')
+  })
+
+  it('should send checkout ID from events/addEvent mutation', async () => {
     await saveCheckoutId('events/addEvent', {
       checkoutId: '441fc3e3f3f2da198d0fa112593262f3'
     })
