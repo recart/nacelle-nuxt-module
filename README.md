@@ -36,6 +36,24 @@ However, if you have a Nacelle site, you need to install this Nuxt module to mak
 
     You can find your Site ID on the Recart dashboard: [app.recart.com/settings/me](https://app.recart.com/settings/me)
 
+3. **Add our metafields to the checkout object.**
+
+    Open `store/checkout.js` and find the `this.$nacelle.checkout.process` method call. In a fresh Nacelle install, it looks like this:
+
+    ```js
+    let checkout = await this.$nacelle.checkout.process({ cartItems, checkoutId })
+    ```
+
+    To help Recart identify checkouts and orders, extend this line with `metafields`, like this:
+
+    ```js
+    let checkout = await this.$nacelle.checkout.process({
+      cartItems,
+      checkoutId,
+      metafields: this.$recart.getMetafieldsForCheckout() // <-- add this line
+    })
+    ```
+
 ## Support
 
 If you have any questions, feel free to contact Recart support at [support@recart.com](mailto:support@recart.com).
