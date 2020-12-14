@@ -105,7 +105,7 @@ describe('checkout / saveCheckoutId', () => {
 
   it('should NOT send anything if encoded checkout ID is invalid', async () => {
     await saveCheckoutId('checkout/setCheckout', {
-      id: 'blablablablablabla...JmMz9rZXk9N2U4MGMwZjVlNTdjNDFlODVjNDRiNGFjMTBlNjQzYTQ='
+      id: 'blaBLAblaBLAblaBLAblaBLAblaBLAblaBLAblaBLAblaBLAblaBLAblaBLANDRiNGFjMTBlNjQzYTQ='
     })
 
     sinon.assert.notCalled(global.window._recart.setShopifyCheckoutId)
