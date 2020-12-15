@@ -15,26 +15,32 @@ describe('checkout / getMetafieldsForCheckout', () => {
 
   const testTable = [
     {
-      name: 'should return empty array if window._recart does not exist',
+      name: 'should return only the default metafield if window._recart does not exist',
       window: {},
-      expected: []
+      expected: [{ key: 'RecartIntegration', value: 'Nacelle' }]
     },
     {
-      name: 'should return RecartSessionId if it is on window._recart',
+      name: 'should add RecartSessionId if it is on window._recart',
       window: {
         _recart: { getSessionId: () => 'some-session-id' }
       },
-      expected: [{ key: 'RecartSessionId', value: 'some-session-id' }]
+      expected: [
+        { key: 'RecartIntegration', value: 'Nacelle' },
+        { key: 'RecartSessionId', value: 'some-session-id' }
+      ]
     },
     {
-      name: 'should return RecartShopperId if it is on window._recart',
+      name: 'should add RecartShopperId if it is on window._recart',
       window: {
         _recart: { getShopperId: () => 'some-shopper-id' }
       },
-      expected: [{ key: 'RecartShopperId', value: 'some-shopper-id' }]
+      expected: [
+        { key: 'RecartIntegration', value: 'Nacelle' },
+        { key: 'RecartShopperId', value: 'some-shopper-id' }
+      ]
     },
     {
-      name: 'should return both RecartSessionId AND RecartShopperId if they exist',
+      name: 'should add both RecartSessionId AND RecartShopperId if they exist',
       window: {
         _recart: {
           getSessionId: () => 'some-session-id',
@@ -42,6 +48,7 @@ describe('checkout / getMetafieldsForCheckout', () => {
         }
       },
       expected: [
+        { key: 'RecartIntegration', value: 'Nacelle' },
         { key: 'RecartSessionId', value: 'some-session-id' },
         { key: 'RecartShopperId', value: 'some-shopper-id' }
       ]
