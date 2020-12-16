@@ -4,7 +4,7 @@ const { expect } = require('chai')
 const plugin = require('../lib/recart-nacelle-plugin')
 const cartLib = require('../lib/cart')
 
-describe('recart-nucelle-plugin', () => {
+describe('rebuild cart flow', () => {
   let globalWindowBackup, sandbox, ctx, inject
 
   before(() => {
@@ -71,5 +71,127 @@ describe('recart-nucelle-plugin', () => {
 
     expect(ctx.store.dispatch.callCount).to.equal(0)
     expect(global.window._recart.removeCartRecoveryOverlay.callCount).to.equal(1)
+  })
+})
+
+describe('save cart flow', () => {
+  let globalWindowBackup, sandbox, ctx, inject, subscribeCallBack
+
+  before(() => {
+    globalWindowBackup = global.window
+    sandbox = sinon.createSandbox()
+
+    global.window = {
+      _recart: { isReady: () => true },
+      onNuxtReady: (callback) => callback()
+    }
+
+    ctx = {
+      query: {},
+      store: { subscribe: (callBack) => { subscribeCallBack = callBack } }
+    }
+
+    inject = () => true
+  })
+
+  afterEach(() => {
+    sandbox.reset()
+  })
+
+  after(() => {
+    sandbox.restore()
+    global.window = globalWindowBackup
+  })
+
+  it('should trigger save cart on cart/addLineItemMutation', async () => {
+    cartLib.saveCart = sandbox.stub()
+
+    const mutation = { type: 'cart/addLineItemMutation', payload: {} }
+    const state = { cart: { example: 'example' }, products: {} }
+
+    await plugin(ctx, inject)
+    await subscribeCallBack(mutation, state)
+
+    expect(cartLib.saveCart.callCount).to.equal(1)
+    expect(cartLib.saveCart.firstCall.args[0]).to.eql(state.cart)
+    expect(cartLib.saveCart.firstCall.args[1]).to.eql(state.products)
+    expect(cartLib.saveCart.firstCall.args[2]).to.eql(ctx)
+  })
+
+  it('should trigger save cart on cart/addLineItemMutation', async () => {
+    cartLib.saveCart = sandbox.stub()
+
+    const mutation = { type: 'cart/addLineItemMutation', payload: {} }
+    const state = { cart: { example: 'example' }, products: {} }
+
+    await plugin(ctx, inject)
+    await subscribeCallBack(mutation, state)
+
+    expect(cartLib.saveCart.callCount).to.equal(1)
+    expect(cartLib.saveCart.firstCall.args[0]).to.eql(state.cart)
+    expect(cartLib.saveCart.firstCall.args[1]).to.eql(state.products)
+    expect(cartLib.saveCart.firstCall.args[2]).to.eql(ctx)
+  })
+
+  it('should trigger save cart on cart/incrementLineItemMutation', async () => {
+    cartLib.saveCart = sandbox.stub()
+
+    const mutation = { type: 'cart/incrementLineItemMutation', payload: {} }
+    const state = { cart: { example: 'example' }, products: {} }
+
+    await plugin(ctx, inject)
+    await subscribeCallBack(mutation, state)
+
+    expect(cartLib.saveCart.callCount).to.equal(1)
+    expect(cartLib.saveCart.firstCall.args[0]).to.eql(state.cart)
+    expect(cartLib.saveCart.firstCall.args[1]).to.eql(state.products)
+    expect(cartLib.saveCart.firstCall.args[2]).to.eql(ctx)
+  })
+
+  it('should trigger save cart on cart/decrementLineItemMutation', async () => {
+    cartLib.saveCart = sandbox.stub()
+
+    const mutation = { type: 'cart/decrementLineItemMutation', payload: {} }
+    const state = { cart: { example: 'example' }, products: {} }
+
+    await plugin(ctx, inject)
+    await subscribeCallBack(mutation, state)
+
+    expect(cartLib.saveCart.callCount).to.equal(1)
+    expect(cartLib.saveCart.firstCall.args[0]).to.eql(state.cart)
+    expect(cartLib.saveCart.firstCall.args[1]).to.eql(state.products)
+    expect(cartLib.saveCart.firstCall.args[2]).to.eql(ctx)
+  })
+
+  it('should trigger save cart on cart/removeLineItemMutation', async () => {
+    cartLib.saveCart = sandbox.stub()
+
+    const mutation = { type: 'cart/removeLineItemMutation', payload: {} }
+    const state = { cart: { example: 'example' }, products: {} }
+
+    await plugin(ctx, inject)
+    await subscribeCallBack(mutation, state)
+
+    expect(cartLib.saveCart.callCount).to.equal(1)
+    expect(cartLib.saveCart.firstCall.args[0]).to.eql(state.cart)
+    expect(cartLib.saveCart.firstCall.args[1]).to.eql(state.products)
+    expect(cartLib.saveCart.firstCall.args[2]).to.eql(ctx)
+  })
+
+  it('should not trigger save cart if cart is rebuilding', async () => {
+    cartLib.saveCart = sandbox.stub()
+
+    ctx.query = {
+      cart_id: 'some-cart-id',
+      utm_source: 'some-utm-source'
+    }
+
+    const mutation = { type: 'cart/addLineItemMutation', payload: {} }
+    const state = { cart: { example: 'example' }, products: {} }
+
+    await plugin(ctx, inject)
+    await subscribeCallBack(mutation, state)
+
+    expect(cartLib.saveCart.callCount).to.equal(0)
   })
 })
