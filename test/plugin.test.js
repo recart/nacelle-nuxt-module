@@ -44,7 +44,7 @@ describe('rebuild cart flow', () => {
   })
 
   it('should trigger overlay and rebuildCart if utmCource and cartId present', async () => {
-    cartLib.rebuildCart = sandbox.stub()
+    cartLib.rebuildCart = sandbox.stub().resolves()
 
     await plugin(ctx, inject)
 
@@ -104,7 +104,7 @@ describe('save cart flow', () => {
   })
 
   it('should trigger save cart on cart/addLineItemMutation', async () => {
-    cartLib.saveCart = sandbox.stub()
+    cartLib.saveCart = sandbox.stub().resolves()
 
     const mutation = { type: 'cart/addLineItemMutation', payload: {} }
     const state = { cart: { example: 'example' }, products: {} }
@@ -119,7 +119,7 @@ describe('save cart flow', () => {
   })
 
   it('should trigger save cart on cart/addLineItemMutation', async () => {
-    cartLib.saveCart = sandbox.stub()
+    cartLib.saveCart = sandbox.stub().resolves()
 
     const mutation = { type: 'cart/addLineItemMutation', payload: {} }
     const state = { cart: { example: 'example' }, products: {} }
@@ -134,7 +134,7 @@ describe('save cart flow', () => {
   })
 
   it('should trigger save cart on cart/incrementLineItemMutation', async () => {
-    cartLib.saveCart = sandbox.stub()
+    cartLib.saveCart = sandbox.stub().resolves()
 
     const mutation = { type: 'cart/incrementLineItemMutation', payload: {} }
     const state = { cart: { example: 'example' }, products: {} }
@@ -149,7 +149,7 @@ describe('save cart flow', () => {
   })
 
   it('should trigger save cart on cart/decrementLineItemMutation', async () => {
-    cartLib.saveCart = sandbox.stub()
+    cartLib.saveCart = sandbox.stub().resolves()
 
     const mutation = { type: 'cart/decrementLineItemMutation', payload: {} }
     const state = { cart: { example: 'example' }, products: {} }
@@ -164,7 +164,7 @@ describe('save cart flow', () => {
   })
 
   it('should trigger save cart on cart/removeLineItemMutation', async () => {
-    cartLib.saveCart = sandbox.stub()
+    cartLib.saveCart = sandbox.stub().resolves()
 
     const mutation = { type: 'cart/removeLineItemMutation', payload: {} }
     const state = { cart: { example: 'example' }, products: {} }
@@ -179,7 +179,7 @@ describe('save cart flow', () => {
   })
 
   it('should not trigger save cart if cart is rebuilding', async () => {
-    cartLib.saveCart = sandbox.stub()
+    cartLib.saveCart = sandbox.stub().resolves()
 
     ctx.query = {
       cart_id: 'some-cart-id',
