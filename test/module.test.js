@@ -37,7 +37,7 @@ describe('module', () => {
     recartModule.call(nuxtContext, moduleOptions)
 
     sandbox.assert.calledOnceWithMatch(console.error, params => {
-      expect(params).to.equal('RecartSiteId is required on module options')
+      expect(params).to.equal('RecartSiteId is required in module options')
       return true
     })
   })

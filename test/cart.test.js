@@ -16,7 +16,9 @@ describe('cart / saveCart', () => {
 
     global.window = {
       _recart: {
-        setCart: sandbox.stub()
+        setCart: sandbox.stub(),
+        getSiteId: sandbox.stub(),
+        getSessionId: sandbox.stub()
       },
       location: {
         hostname: 'some-host-name'
